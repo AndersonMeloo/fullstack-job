@@ -76,6 +76,15 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --bg-clima: linear-gradient(to bottom right,
+      #6f4ea8,
+      #5f4597,
+      #4d3a85,
+      #3a2c6c);
+  --bg-clima2: linear-gradient(to bottom right,
+      #483576,
+      #2c3157
+    );
 }
 
 .dark {
@@ -122,14 +131,10 @@
     height: 100vh;
     background: linear-gradient(to bottom right,
         #cae1fe,
-        /* azul bem claro */
         #b9d7ff,
-        /* azul celeste */
         #9dc0fd,
-        /* azul claro */
-        #85b2fc
-        /* azul mais profundo */
-      );
+        #85b2fc);
+
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
