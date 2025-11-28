@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { MapPin, Search, SunSnow } from "lucide-react";
 import { useState } from "react";
+import Cards from "./conteudos/Cards";
 
 interface Weather {
   time: string;
@@ -38,7 +39,7 @@ export default function Home() {
       // Use localhost para evitar problemas de CORS
       const res = await fetch(`http://localhost:8000/weather?city=${city}`);
       if (!res.ok) {
-        throw new Error("Cidade não encontrada");
+        throw new Error("Localização não encontratada, tente novamente...");
       }
       const json = await res.json();
       setData(json);
@@ -52,52 +53,124 @@ export default function Home() {
   return (
 
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-[90%] h-full m-auto flex items-center justify-center">
-        <div className="bg-white rounded-xl p-10">
+      <div className="w-[44%] h-full m-auto flex items-center justify-center">
+        <div className="bg-[image:var(--bg-clima2)] rounded-4xl">
 
           <div
-            className="bg-white/5 backdrop-blur-[3px] rounded-xl p-10 shadow-lg flex flex-col gap-4 bg-gradient-to-b from-[#6eaafa] via-[#5084f4] to-[#376af1]"
-            style={{ padding: "2rem", fontFamily: "sans-serif" }}
+            className="rounded-xl p-10 shadow-lg flex flex-col gap-1"
+            style={{ fontFamily: "sans-serif" }}
           >
 
             <h1
               style={{ fontFamily: "var(--font-montserrat)" }}
-              className="font-bold text-white tracking-[1px] text-4xl flex items-center justify-center"
-            >Clima Tempo</h1>
+              className="font-semibold text-white text-3xl flex items-center justify-center"
+            >
+              Clima Tempo
+            </h1>
+            <p className="flex items-center justify-center gap-2 mb-2 text-center text-[15px] text-[#757295]"
+              style={{ fontFamily: "var(--font-nunito)" }}
+            >
+              <SunSnow size={20} />
+              Temperatura |
+              {!data && <span>---</span>}
+              {data && (
+                <p>{data.weather.temperature}°C</p>
+              )}
+            </p>
 
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center border-2 border-[#757295] ounded-2xl rounded-2xl bg-[#343062]">
               <Input
                 type="text"
-                placeholder="Digite a Cidade"
+                placeholder="Digite sua Localização"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
+                className="outline-none border-none focus:outline-none focus:ring-0 focus-visible:ring-0 text-white placeholder:text-[#757295] font-medium"
+                style={{ fontFamily: 'var(--font-nunito' }}
               />
 
               <Button
-                className="cursor-pointer"
+                className="cursor-pointer bg-transparent hover:bg-transparent group"
                 onClick={buscar}
               >
-                <Search />
+                <Search
+                  className="transform transition-transform duration-200 group-hover:scale-130"
+                />
               </Button>
             </div>
 
             <h2
               style={{ fontFamily: "var(--font-nunito)" }}
-              className="text-white text-[18px] text-center">
-              Localização</h2>
+              className="text-[#757295] text-[14px] text-center flex items-center justify-center gap-1">
+              <MapPin size={16} />
+              Localização
+            </h2>
 
-            {loading && <p>Carregando...</p>}
+            {!data && <span className="text-center text-[#757295]">----</span>}
+            {data && (
+              <h2
+                className="text-white text-center var(--font-montserrat)"
+              >
+                {data.city}, {data.country}
+              </h2>
+            )}
+
+            {loading &&
+              <p className="text-emerald-400">
+                Carregando...
+              </p>
+            }
             {error && <p style={{ color: "red" }}>{error}</p>}
 
-            {data && (
+            {/* {data && (
               <div style={{ marginTop: "2rem" }}>
-                <h2>{data.city}, {data.country}</h2>
-                <p>Temperatura: {data.weather.temperature}°C</p>
-                <p>Vento: {data.weather.windspeed} km/h</p>
                 <p>Direção do vento: {data.weather.winddirection}°</p>
                 <p>Hora: {new Date(data.weather.time).toLocaleString()}</p>
               </div>
-            )}
+            )} */}
+          </div>
+
+          <div className="flex flex-wrap gap-4 justify-center">
+
+            <Cards>
+              <div className="flex flex-col w-full p-1">
+                <h2
+                  style={{ fontFamily: "var(--font-nunito)" }}
+                  className="text-white text-[14px]"
+                >
+                  Temperatura
+                </h2>
+                {!data && <span className="text-center text-white">----</span>}
+                {data && (
+                  <p
+                    className="text-white flex flex-col"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
+                    {data.weather.temperature}°C
+                  </p>
+                )}
+              </div>
+            </Cards>
+
+            <Cards>
+              <div className="flex flex-col w-full p-1">
+                <h2
+                  style={{ fontFamily: "var(--font-nunito)" }}
+                  className="text-white text-[14px]"
+                >
+                  Vento
+                </h2>
+                {!data && <span className="text-center text-white">----</span>}
+                {data && (
+                  <p
+                    className="text-white flex flex-col"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
+                    {data.weather.windspeed} km/h
+                  </p>
+                )}
+              </div>
+            </Cards>
+
           </div>
 
         </div>
