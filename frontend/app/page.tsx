@@ -47,16 +47,21 @@ export default function Home() {
     setData(null);
 
     try {
+      
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${apiUrl}/weather?city=${encodeURIComponent(city)}`);
 
-      const res = await fetch(`http://localhost:8000/weather?city=${city}`);
       if (!res.ok) {
-        throw new Error("Localização não encontratada, tente novamente...");
+        throw new Error("Localização não encontrada, tente novamente...");
       }
+
       const json = await res.json();
       setData(json);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
+      } else {
+        setError("Erro ao buscar dados do clima");
       }
     } finally {
       setLoading(false);
