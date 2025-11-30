@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Search, SunSnow } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cards from "./conteudos/Cards";
 
 interface Weather {
@@ -28,6 +28,17 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  useEffect(() => {
+
+    const interval = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   async function buscar() {
     if (!city) return;
 
@@ -36,7 +47,7 @@ export default function Home() {
     setData(null);
 
     try {
-      // Use localhost para evitar problemas de CORS
+
       const res = await fetch(`http://localhost:8000/weather?city=${city}`);
       if (!res.ok) {
         throw new Error("Localização não encontratada, tente novamente...");
@@ -63,7 +74,7 @@ export default function Home() {
 
             <h1
               style={{ fontFamily: "var(--font-montserrat)" }}
-              className="font-semibold text-white text-3xl flex items-center justify-center"
+              className="font-semibold text-white text-2xl md:text-3xl flex items-center justify-center "
             >
               Clima Tempo
             </h1>
@@ -120,18 +131,12 @@ export default function Home() {
               </p>
             }
             {error && <p style={{ color: "red" }}>{error}</p>}
-
-            {/* {data && (
-              <div style={{ marginTop: "2rem" }}>
-                <p>Direção do vento: {data.weather.winddirection}°</p>
-                <p>Hora: {new Date(data.weather.time).toLocaleString()}</p>
-              </div>
-            )} */}
           </div>
 
-          <div className="flex flex-wrap gap-4 justify-center">
-
-            <Cards>
+          <div className="grid grid-cols-2 gap-4 justify-items-center">
+            <Cards
+              icon="/cloudy.png"
+            >
               <div className="flex flex-col w-full p-1">
                 <h2
                   style={{ fontFamily: "var(--font-nunito)" }}
@@ -151,7 +156,9 @@ export default function Home() {
               </div>
             </Cards>
 
-            <Cards>
+            <Cards
+              icon="/wind.png"
+            >
               <div className="flex flex-col w-full p-1">
                 <h2
                   style={{ fontFamily: "var(--font-nunito)" }}
@@ -171,6 +178,44 @@ export default function Home() {
               </div>
             </Cards>
 
+            <Cards
+              icon="/sky.png"
+            >
+              <div className="flex flex-col w-full p-1">
+                <h2
+                  style={{ fontFamily: "var(--font-nunito)" }}
+                  className="text-white text-[14px]"
+                >
+                  Hora
+                </h2>
+                {!data && <span className="text-center text-white">----</span>}
+                {data && (
+                  <p className="text-white flex flex-col">
+                    {currentTime.toLocaleString()}
+                  </p>
+                )}
+              </div>
+            </Cards>
+
+            <Cards
+              icon="/cloudyOne.png"
+            >
+              <div className="flex flex-col w-full p-1">
+                <h2
+                  style={{ fontFamily: "var(--font-nunito)" }}
+                  className="text-white text-[14px]"
+                >
+                  Direção <br /> do vento:
+                </h2>
+                {!data && <span className="text-center text-white">----</span>}
+                {data && (
+
+                  <p className="text-white flex flex-col">
+                    {data.weather.winddirection}°
+                  </p>
+                )}
+              </div>
+            </Cards>
           </div>
 
         </div>
