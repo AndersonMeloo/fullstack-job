@@ -59,3 +59,4 @@ def weather(city: str):
     }
 
 #rodarbackend python -m uvicorn main:app --reload
+#pip install fastapi uvicorn
