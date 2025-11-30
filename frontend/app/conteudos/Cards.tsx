@@ -1,11 +1,12 @@
 import Image from "next/image";
 
 interface CardsProps {
-    children: React.ReactNode
+    children: React.ReactNode,
+    icon: string
 }
 
-function Cards({ children }: CardsProps) {
-
+function Cards({ children, icon }: CardsProps) {
+    
     return (
 
         <div className="w-[100px] h-[120px] sm:w-[140px] sm:h-[80px] rounded-xl shadow-2xl mt-2 mb-2 overflow-hidden relative bg-gradient-to-r from-[#5735b1] via-[#48309d] to-[#3c2c8d]">
@@ -17,7 +18,7 @@ function Cards({ children }: CardsProps) {
             ></div>
 
             <Image
-                src="/cloudy.png"
+                src={icon}
                 alt=""
                 width={44}
                 height={44}
