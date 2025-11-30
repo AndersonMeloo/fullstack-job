@@ -47,7 +47,7 @@ export default function Home() {
     setData(null);
 
     try {
-      
+
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/weather?city=${encodeURIComponent(city)}`);
 
@@ -231,4 +231,4 @@ export default function Home() {
   );
 }
 
-// https://www.shutterstock.com/pt/image-illustration/modern-minimal-mobile-app-ui-interface-2132058963?trackingId=bbe44345-dfb6-47a5-ab45-c3f0d8085629
+
